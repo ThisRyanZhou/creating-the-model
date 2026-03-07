@@ -1,17 +1,26 @@
 from ultralytics import YOLO
 
-# Load the YOLOv8n model (pretrained)
 model = YOLO("yolov8n.yaml")
 
-# Train using the YAML dataset
 model.train(
-    data="letters.yaml",  # path to YAML file
-    imgsz=640,
-    batch=16,
-    epochs=50,
-    lr0=0.01,
-    project="runs/train",
-    name="yolo_letters2"
-)
+    data="letters.yaml",
+    epochs=200,
+    imgsz=1024,
+    batch=8,
 
-print("Training completed!")
+    flipud=0.0,
+    fliplr=0.5,
+
+    degrees=10,
+    translate=0.2,
+    scale=0.5,
+    shear=2,
+
+    hsv_h=0.015,
+    hsv_s=0.7,
+    hsv_v=0.4,
+
+    mosaic=1.0,
+    close_mosaic=10,
+    mixup=0.2
+)
