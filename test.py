@@ -1,7 +1,7 @@
 from ultralytics import YOLO
 
 # Load your trained model (fixed path)
-model = YOLO(r"C:\Users\1o8zh\Documents\githubStuff\creating-the-model\runs\detect\runs\train\yolo_letters2\weights\best.pt")
+weights_path = Path("runs/train/yolo_letters2/weights/best.pt")
 
 # Run inference on a single image
 results = model("testabcq.jpg")  # returns a list of Results
