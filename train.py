@@ -17,7 +17,7 @@ model.train(
     shear=2,
 
     hsv_h=0.015,
-    hsv_s=0.7,
+    hsv_s=0.4,
     hsv_v=0.4,
 
     mosaic=1.0,
