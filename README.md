@@ -2,6 +2,8 @@
 
 Trains the CV model on the given dataset of handwritten letters.
 
+Part of [ChickenScratch](https://github.com/kennething/chickenscratch).
+
 ## Setup Instructions
 
 1. Ensure Python and pip are installed on your machine.
@@ -9,7 +11,7 @@ Trains the CV model on the given dataset of handwritten letters.
 2. Select this directory:
 
 ```sh
-cd model/training
+cd training
 ```
 
 3. Install dependencies:
