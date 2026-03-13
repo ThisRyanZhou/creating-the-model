@@ -87,8 +87,7 @@ If you already have LabelImg set up, you can skip this section.
 
 ## Training the Model
 
-Create a `.env` file in the same directory as `train.py` and add the following
-values:
+Create a `.env` file in this directory with the following content:
 
 ```sh
 EPOCHS=500 # number of times the training is run for
