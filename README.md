@@ -4,63 +4,129 @@ Trains the CV model on the given dataset of handwritten letters.
 
 Part of [ChickenScratch](https://github.com/kennething/chickenscratch).
 
+## Creating Training Data
+
+First:
+
+1. Create a dataset of handwritten letters.
+2. Scan the handwritten letters using a document scanner, like CamScanner.
+3. Crop each letter into its own square image.
+4. Use LabelImg, a tool that allows you to label your images for training the
+   model.
+
+### Setting Up LabelImg
+
+If you already have LabelImg set up, you can skip this section.
+
+1. Ensure your Python version is exactly 3.8, as LabelImg does not work with
+   other versions of Python.
+2. Download Anaconda from [here](https://www.anaconda.com/download) and set it
+   as your default Python interpreter.
+
+   For help downloading and setting up Anaconda, refer to their
+   [install instructions](https://www.anaconda.com/docs/getting-started/anaconda/install#basic-install-instructions).
+
+3. Activate a virtual environment with Python 3.8:
+
+   ```sh
+   conda create -n labelimg python=3.8 -y
+   conda activate labelimg
+   conda install -c conda-forge labelimg
+   ```
+
+4. Once all of this is downloaded, you should be able to run `labelimg` in your
+   terminal.
+
+### Using LabelImg
+
+1. Create a folder for all of your raw images that you want to label.
+2. Open LabelImg and select the folder with your raw images.
+3. On the right, there should be a button that allows you to choose the version
+   to save as. Change that version to YOLO.
+4. To label the images, click and select the image and give it a name. Do this
+   with all of your images.
+
+   Once you are done labeling, click the save button. This will save a copy of
+   each image as a `png` and a `txt` file. The `png` file is the image itself, while
+   the `txt` file contains the labels for that image.
+
+5. Move the `png` files to the `images` tab and the `txt` files to the `labels`
+   tab.
+6. Next, choose which images the model should be trained on, and which images
+   the model should be validated/tested on. Move the `png` files to the
+   respective tab and their counterpart `txt` files to the same tab in the
+   `labels` directory.
+
+   You should create an 80/20 split with 80% of the images+labels going into
+   training, and 20% into validating.
+
+7. You should see an extra file in your raw, called `class.txt`.
+
+   Copy all information inside it and add it to the `class.txt` file already in
+   the `dataset_root/labels/train` directory.
+
+8. Deactivite Anaconda with `conda deactivate` once you're done.
+
 ## Setup Instructions
 
 1. Ensure Python and pip are installed on your machine.
 
 2. Select this directory:
 
-```sh
-cd training
-```
+   ```sh
+   cd training
+   ```
 
 3. Install dependencies:
 
+   ```sh
+   python -m venv venv
+   source venv/bin/activate # on windows, use `venv\Scripts\activate`
+   pip install -r requirements.txt
+   ```
+
+## Training the Model
+
+Create a `.env` file in the same directory as `train.py` and add the following
+values:
+
 ```sh
-python -m venv venv
-source venv/bin/activate # on windows, use `venv\Scripts\activate`
-pip install -r requirements.txt
+EPOCHS=500 # number of times the training is run for
+IMAGE_SIZE=1024 # resolution of image, >= 256 is recommended for better results
+BATCH=8 # number of images processed at once
 ```
 
-Running the program.
-Right now this code is edited for a pc with 32gb ram and a RTX 5070. It will take approximately 1 hour to run as well. If you are at anything lower please change the train.py file so we dont break your ram or your graphics card.
-There are 3 main settings to change:
-epochs=500,
-imgsz=1024,
-batch=8,
-Normal computer (16gb ram, no graphics/built in graphics) should be able to able to run fine at
-epochs=50;
-imgsz=256;
-batch=2;
-Slightly higher would be 
-epochs=100;
-imgsz=512;
-batch=3;
-The better the settings the more accurate the model will end up being the best way to check accuracy is dependent on the _loss it should be really low under 0.2 for a fully accurate model. The setting that we ran all the way at the top ended with a 0.3 which is fine for our use case.
-The place you would find the result would be in \runs\detect\train\weights. There are two files best.pt and last.pt where last is the one that is trained the most while best is the one that scored the highest on accuracy.
+The values above are set up to run on a computer with an RTX 5070 and 32gb of
+RAM. With these specs and options, we were able to train the model in
+approximately one hour.
 
-Adding more training data.
-This will be split into two section setting up labelImg and using labelImg
+However, you likely have different specs, so you may need to adjust some of
+these options so your computer doesn't spontaneously combust.
 
-setting up:
-I will be showing one way to do this but as long as your python version is exactly 3.8 (fuckin labelImg dev get better) and you have labelImg downloaded you should be able to skip this part.
-download anaconda though any trusted site mine will be based on this https://www.anaconda.com/download
-once you have anaconda downloaded set it as your default python interpreter and your default terminal prompt either do it while its downloading or do it manually.
-To do it manually:
-windows: go to settings then apps then Default apps, set the current default app to your exe C:\Users\YourName\anaconda3\python.exe
-macos: (please stop using a mac it hurts my soul and for punishment yall need to find your own guide) just run conda init and it should work fine you might want to open a venv source path-to-conda/bin/activate
-Once your down downloading anaconda please activate a virtual enviroment with python 3.8 
-conda create -n labelimg python=3.8 -y
-acivate the venv
-conda activate labelimg
-then download labelImg
-conda install -c conda-forge labelimg
-once all this is downloaded you should be able to type labelimg and it should run
+> \[!NOTE\]
+> With 16gb of RAM and no graphics/built-in graphics, we recommend:
 
-using labelImg
-I recomend creating a file with all of your raw photos so you can edit them all at once with labelImg.
-Once your in labelImg just open a file and select the file with all your raw images. On the right there should be a button that allow you to choose the version to save as change that version to YOLO. 
-To label the images click w select the image and give it a name. Do this with all of your images.
-Now you should click save and it should save one copy of each image. One as a png and one as a txt. You will need to move the png to the images tab and the txt to the labels tab. Then choose which images you would like the model to be trained on and which images you would like the model to be validated/tested on. Move the png to the respective tab and the counterpart txt file to the same tab in the labels directory. You should create a 80/20 split with 80% going into training and 20% going into validating. Next you will need to edit the class.txt. You should see an extra file in your raw that is called class.txt copy all information inside it (do it however you like i normally cat class.txt and shift control c whatever comes out) and then add it to the class.txt file already in the dataset_root/labels/train.
+> ```sh
+> EPOCHS=50
+> IMAGE_SIZE=256
+> BATCH=2
+> ```
 
-once this is done you should be able to run the train.py once you exit anaconda using conda deactivate.
+> With better specs, you can increase these values to get a more accurate
+> model, like:
+
+> ```sh
+> EPOCHS=100
+> IMAGE_SIZE=512
+> BATCH=3
+> ```
+
+> The higher the values, the more accurate the model will be.
+
+The best way to check the accuracy of the model is to look at the `_loss`
+value. An accurate model should have a loss value under `0.2`, but for our use
+case, we were able to get away with a loss of `0.3`.
+
+After training, you should see two new files in `/runs/detect/train/weights`
+called `best.pt` and `last.pt`. `last.pt` is the model that was trained the
+most, while `best.pt` is the model that scored the highest on accuracy.
