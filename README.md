@@ -103,24 +103,24 @@ approximately one hour.
 However, you likely have different specs, so you may need to adjust some of
 these options so your computer doesn't spontaneously combust.
 
-> \[!NOTE\]
+> \[!IMPORTANT\]
 > With 16gb of RAM and no graphics/built-in graphics, we recommend:
-
+>
 > ```sh
 > EPOCHS=50
 > IMAGE_SIZE=256
 > BATCH=2
 > ```
-
+>
 > With better specs, you can increase these values to get a more accurate
 > model, like:
-
+>
 > ```sh
 > EPOCHS=100
 > IMAGE_SIZE=512
 > BATCH=3
 > ```
-
+>
 > The higher the values, the more accurate the model will be.
 
 The best way to check the accuracy of the model is to look at the `_loss`
