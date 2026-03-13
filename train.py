@@ -1,12 +1,17 @@
 from ultralytics import YOLO
+import os
 
 model = YOLO("yolov8n.yaml")
 
+epochs = os.environ["EPOCHS"]
+imgsz = os.environ["IMAGE_SIZE"]
+batch = os.environ["BATCH"]
+
 model.train(
     data="letters.yaml",
-    epochs=500,
-    imgsz=1024,
-    batch=8,
+    epochs=int(epochs),
+    imgsz=int(imgsz),
+    batch=int(batch),
 
     flipud=0.0,
     fliplr=0.5,
