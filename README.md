@@ -122,6 +122,16 @@ these options so your computer doesn't spontaneously combust.
 >
 > The higher the values, the more accurate the model will be.
 
+Now that you have your settings, train the model:
+
+```sh
+python train.py
+```
+
+Allow for 1-4 hours of training, depending on your specs.
+
+## Results
+
 The best way to check the accuracy of the model is to look at the `_loss`
 value. An accurate model should have a loss value under `0.2`, but for our use
 case, we were able to get away with a loss of `0.3`.
